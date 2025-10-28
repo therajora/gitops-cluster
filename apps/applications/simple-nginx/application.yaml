@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: simple-nginx
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/therajora/gitops-cluster
+    targetRevision: main
+    path: apps/applications/simple-nginx
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: simple-nginx
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  revisionHistoryLimit: 10
