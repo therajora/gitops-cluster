@@ -1,0 +1,57 @@
+## Argo CD configuration
+## Ref: https://github.com/argoproj/argo-cd
+
+nameOverride: argocd
+fullnameOverride: ""
+namespaceOverride: ""
+createClusterRoles: true
+
+global:
+  domain: argocd.local
+
+server:
+  name: server
+  replicas: 1
+  insecure: true
+  grpcWeb: true
+  service:
+    type: ClusterIP
+    port: 80
+    portName: server
+
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+      nginx.ingress.kubernetes.io/grpc-backend: "true"
+    hosts: []
+    paths:
+      - /
+
+controller:
+  name: application-controller
+  replicas: 1
+
+repoServer:
+  name: repo-server
+  replicas: 1
+
+redis:
+  enabled: true
+  name: redis
+
+dex:
+  enabled: false
+
+notifications:
+  enabled: false
+
+applicationSet:
+  enabled: true
+
+configs:
+  params:
+    kustomize.buildOptions: "--enable-helm"
+    server.insecure: "true"

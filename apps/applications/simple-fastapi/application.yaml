@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: simple-fastapi
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/rajora/gitops-cluster
+    targetRevision: main
+    path: apps/applications/simple-fastapi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: simple-fastapi
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  revisionHistoryLimit: 10

@@ -1,0 +1,33 @@
+controller:
+  replicaCount: 1
+  
+  service:
+    type: NodePort
+    nodePorts:
+      http: 30482
+      https: 32719
+  
+  admissionWebhooks:
+    enabled: false
+  
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: false
+  
+  resources:
+    limits:
+      ephemeral-storage: 1Gi
+    requests:
+      cpu: 100m
+      ephemeral-storage: 1Gi
+      memory: 90Mi
+
+defaultBackend:
+  enabled: true
+
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
